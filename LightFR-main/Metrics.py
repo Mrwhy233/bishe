@@ -23,7 +23,7 @@ class Metrics(object):
 
         assert 'pred' in test_data.columns, "没有预测值"
         test_data['rank'] = test_data['pred'].rank(method='first', ascending=False)
-        test_data_rank = int(test_data.head(1)['rank'])
+        test_data_rank = int(test_data.head(1)['rank'].iloc[0])
 
         for current_top_k in range(1, top_k + 1):
             if test_data_rank <= current_top_k:
@@ -42,7 +42,7 @@ class Metrics(object):
 
         assert 'pred' in test_data.columns, "没有预测值"
         test_data['rank'] = test_data['pred'].rank(method='first', ascending=False)
-        test_data_rank = int(test_data.head(1)['rank'])
+        test_data_rank = int(test_data.head(1)['rank'].iloc[0])
         for current_top_k in range(1, top_k + 1):
             if test_data_rank <= current_top_k:
                 ndcgs[current_top_k] = math.log(2) * 1.0 / math.log(1 + test_data_rank)
@@ -153,8 +153,8 @@ class Metrics(object):
             dcg = 0.0
             if len(listdata) >= k:
                 for i in range(k):
-                    idcg += (pow(2, real_value_list[i][1]) - 1) / (log(i + 2, 2))
-                    dcg += (pow(2, predict_value_list[i][1]) - 1) / (log(i + 2, 2))
+                    idcg += (pow(2, real_value_list[i][1]) - 1) / (math.log(i + 2, 2))
+                    dcg += (pow(2, predict_value_list[i][1]) - 1) / (math.log(i + 2, 2))
                 if (idcg != 0):
                     nDCG.append(float(dcg / idcg))
             else:
